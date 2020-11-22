@@ -37,10 +37,10 @@ func main() {
 			log.Fatal(err)
 		}
 
-		n2, _ := destino.Write(buf[:n1])
+		destino.Write(buf[:n1])
 
-		fmt.Print(string(destino.contenido[:n2]))
 	}
+	fmt.Print(string(destino.contenido))
 }
 
 func (le *lectorescritor) Read(b []byte) (n int, err error) {
@@ -79,7 +79,7 @@ func (le *lectorescritor) Write(b []byte) (n int, err error) {
 
 	le.tamaño = len(le.contenido)
 
-	n2 := le.contenido
+	n2 := le.tamaño
 
 	n = n2 - n1
 
