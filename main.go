@@ -4,28 +4,19 @@ import (
 	"fmt"
 	"io"
 	"log"
+
+	"github.com/cfabrica46/writers_and_readers/struct_writer_reader/utilidades"
 )
-
-type lectorescritor struct {
-	contenido []byte
-	indice    int
-	tamaño    int
-}
-
-func nuevolectorescritor(b []byte) *lectorescritor {
-
-	return &lectorescritor{contenido: b}
-}
 
 func main() {
 
 	contenidoorigen := []byte("Hola a todos, soy César UwU")
-	origen := nuevolectorescritor(contenidoorigen)
+	origen := utilidades.Nuevolectorescritor(contenidoorigen)
 
 	buf := make([]byte, 4)
 
 	cotenidodestino := []byte{}
-	destino := nuevolectorescritor(cotenidodestino)
+	destino := utilidades.Nuevolectorescritor(cotenidodestino)
 
 	for {
 		n1, err := origen.Read(buf)
@@ -40,52 +31,5 @@ func main() {
 		destino.Write(buf[:n1])
 
 	}
-	fmt.Print(string(destino.contenido))
-}
-
-func (le *lectorescritor) Read(b []byte) (n int, err error) {
-
-	if le.indice >= len(le.contenido) {
-
-		n = 0
-		err = io.EOF
-		return
-
-	}
-
-	for i := 0; i < len(b); i++ {
-
-		if le.indice == len(le.contenido) {
-			break
-		}
-
-		b[i] = le.contenido[le.indice]
-		le.indice++
-		n++
-
-	}
-
-	return
-
-}
-
-func (le *lectorescritor) Write(b []byte) (n int, err error) {
-
-	le.tamaño = len(le.contenido)
-
-	n1 := le.tamaño
-
-	le.contenido = append(le.contenido, b...)
-
-	le.tamaño = len(le.contenido)
-
-	n2 := le.tamaño
-
-	n = n2 - n1
-
-	if n != len(b) {
-		log.Fatal(err)
-	}
-
-	return
+	fmt.Println(string(destino.String()))
 }
